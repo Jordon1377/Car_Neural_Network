@@ -5,24 +5,17 @@ using System.Collections;
 using UnityEngine;
 
 
-/// <summary>
-/// Neural Network C# (Unsupervised)
-/// </summary>
+
 public class NeuralNetwork : IComparable<NeuralNetwork>
 {
-    private int[] layers; //layers
-    private float[][] neurons; //neuron matix
-    private float[][][] weights; //weight matrix
-    private float fitness; //fitness of the network
+    private int[] layers;
+    private float[][] neurons; //neuron 2d array
+    private float[][][] weights; //weight 3d array
+    private float fitness;
 
 
-    /// <summary>
-    /// Initilizes and neural network with random weights
-    /// </summary>
-    /// <param name="layers">layers to the neural network</param>
     public NeuralNetwork(int[] layers)
     {
-        //deep copy of layers of this network 
         this.layers = new int[layers.Length];
         for (int i = 0; i < layers.Length; i++)
         {
@@ -30,15 +23,11 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         }
 
 
-        //generate matrix
         InitNeurons();
         InitWeights();
     }
 
-    /// <summary>
-    /// Deep copy constructor 
-    /// </summary>
-    /// <param name="copyNetwork">Network to deep copy</param>
+   
     public NeuralNetwork(NeuralNetwork copyNetwork)
     {
         this.layers = new int[copyNetwork.layers.Length];
@@ -66,9 +55,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         }
     }
 
-    /// <summary>
-    /// Create neuron matrix
-    /// </summary>
+    
     private void InitNeurons()
     {
         //Neuron Initilization
@@ -82,18 +69,15 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         neurons = neuronsList.ToArray(); //convert list to array
     }
 
-    /// <summary>
-    /// Create weights matrix.
-    /// </summary>
     private void InitWeights()
     {
 
-        List<float[][]> weightsList = new List<float[][]>(); //weights list which will later will converted into a weights 3D array
+        List<float[][]> weightsList = new List<float[][]>();
 
         //itterate over all neurons that have a weight connection
         for (int i = 1; i < layers.Length; i++)
         {
-            List<float[]> layerWeightsList = new List<float[]>(); //layer weight list for this current layer (will be converted to 2D array)
+            List<float[]> layerWeightsList = new List<float[]>();
 
             int neuronsInPreviousLayer = layers[i - 1]; 
 
@@ -118,11 +102,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         weights = weightsList.ToArray(); //convert to 3D array
     }
 
-    /// <summary>
-    /// Feed forward this neural network with a given input array
-    /// </summary>
-    /// <param name="inputs">Inputs to network</param>
-    /// <returns></returns>
+ 
     public float[] FeedForward(float[] inputs)
     {
         //Add inputs to the neuron matrix
@@ -150,9 +130,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         return neurons[neurons.Length-1]; //return output layer
     }
 
-    /// <summary>
-    /// Mutate neural network weights
-    /// </summary>
+  
     public void Mutate(int val)
     {
         for (int i = 0; i < weights.Length; i++)
@@ -211,11 +189,7 @@ public class NeuralNetwork : IComparable<NeuralNetwork>
         return fitness;
     }
 
-    /// <summary>
-    /// Compare two neural networks and sort based on fitness
-    /// </summary>
-    /// <param name="other">Network to be compared to</param>
-    /// <returns></returns>
+ 
     public int CompareTo(NeuralNetwork other)
     {
         if (other == null) return 1;
